@@ -16,6 +16,7 @@ function* worker(action) {
 
     yield put(actions.changeFromValue(fromValue))
     yield put(actions.changeToValue(toValue))
+    
   } else if (convertDirection === 'to') {
     const toValue = input.toString()
     const fromValue = (

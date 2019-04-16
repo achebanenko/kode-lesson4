@@ -6,11 +6,13 @@ import { ModalHeader, SearchInput, SearchStatus } from '@ui/molecules'
 import { CountriesList } from '@ui/organisms'
 import { routes } from '../../../routes'
 
-export const SelectCountry = ({ push }) => (
+
+export const SelectCountry = ({ push, search }) => (
   <PageTemplate>
     <ModalHeader action={() => push(`${routes.EXCHANGE}`)}>
       <SearchInput onChange={console.log} />
     </ModalHeader>
+    
     <HBox />
     <CountriesList
       title={'История поиска'}
@@ -20,10 +22,14 @@ export const SelectCountry = ({ push }) => (
       ]}
       selectCountry={console.log}
     />
-    <SearchStatus status="initial" />
+
+    <SearchStatus 
+      status="initial" 
+    />
   </PageTemplate>
 )
 
 SelectCountry.propTypes = {
   push: PropTypes.func.isRequired,
+  search: PropTypes.string.isRequired,
 }

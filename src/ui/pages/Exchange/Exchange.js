@@ -1,17 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { routes } from '../../../routes'
 
 import { PageTemplate, HBox, Flex1, Divider } from '@ui/atoms'
 import { styled } from '@ui/theme'
-import {
-  Header,
-  ButtonAccent,
-  SelectField,
-  CheckboxWithText,
-  TextField,
-} from '@ui/molecules'
+import { Header, ButtonAccent, SelectField, CheckboxWithText, TextField } from '@ui/molecules'
 import { DeliveryTime } from '@ui/organisms'
-import { routes } from '../../../routes'
 
 const Wrapper = styled.div`
   padding: ${({ theme }) => theme.paddings.main}px;
@@ -34,12 +28,12 @@ export const Exchange = ({
         <SelectField
           label="Страна 1"
           value="Россия"
-          onPress={() => push(`${routes.SELECT}`)}
+          onPress={() => push(`${routes.SELECT}`, { search: "country1" })}
         />
         <SelectField
           label="Страна 2"
           value="Англия"
-          onPress={() => push(`${routes.SELECT}`)}
+          onPress={() => push(`${routes.SELECT}?country2`)}
         />
         <Divider />
         <HBox />
