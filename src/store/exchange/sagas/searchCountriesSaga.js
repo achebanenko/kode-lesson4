@@ -1,24 +1,25 @@
-import { take, takeEvery, takeLatest, call, put, select, delay, all } from 'redux-saga/effects'
+import { takeEvery, call, put, select, delay, all } from 'redux-saga/effects'
 
 import * as actions from '../actions'
-import { getAllCountries, getCountrySearchInputValue, getHistoryCountries } from '../selectors'
+import { getAllCountries, getCountrySearchInputValue, getHistoryCountries, getStoredHistoryCountries } from '../selectors'
 
 // opening modal
-export function* searchCountriesTrigger() {
+export function* searchCountriesWatcher() {
   yield takeEvery(actions.searchCountriesTrigger.toString(), porter)
 }
 function* porter(action) {
   yield put(actions.changeCountrySearchInput(''))
 
   const historyCountries = yield select(getHistoryCountries)
-  const storedHistoryCountries = JSON.parse(localStorage.getItem('exchange-app:historyCountries')) || []
+  //const storedHistoryCountries = JSON.parse(localStorage.getItem('exchange-app:historyCountries')) || []
+  const storedHistoryCountries = yield select(getStoredHistoryCountries)
   if (historyCountries.length === 0 && storedHistoryCountries.length > 0) {
     yield put(actions.loadHistoryCountries( storedHistoryCountries ))
   }
 }
 
 // user typing
-export function* searchCountriesWatcher() {
+export function* countrySearchInputWatcher() {
   yield takeEvery(actions.changeCountrySearchInput.toString(), worker)
 }
 function* worker(action) {
@@ -33,7 +34,7 @@ function* worker(action) {
       yield put(actions.downloadCountries())
       
       try {
-        const fields = 'name;alpha2Code;currencies';
+        const fields = 'name;alpha2Code;alpha3Code;currencies';
         const res = yield call(
           fetch,
           `https://restcountries.eu/rest/v2/all?fields=${fields}`,
@@ -67,5 +68,8 @@ export function* selectCountryWatcher() {
 function* keeper(action) {
   yield put(actions.saveSelectedCountry(action.payload))
   const freshHistoryCountries = yield select(getHistoryCountries)
+  //persist
+  yield put(actions.storeHistoryCountries(freshHistoryCountries))
+  //localStorage
   localStorage.setItem('exchange-app:historyCountries', JSON.stringify(freshHistoryCountries))
 }

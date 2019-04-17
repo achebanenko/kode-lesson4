@@ -20,7 +20,7 @@ const NotFound = styled.div`
   align-items: center;
 `
 
-export const SearchStatus = withTheme(({ status, theme }) => (
+export const SearchStatus = withTheme(({ status, message, theme }) => (
   <Container>
     {status === 'initial' ? <HLevel5>Начните набирать</HLevel5> : null}
     {status === 'notFound' ? (
@@ -33,9 +33,15 @@ export const SearchStatus = withTheme(({ status, theme }) => (
     {status === 'loading' ? (
       <IconLoader color={theme.pallete.radicalRed} />
     ) : null}
+    {status === 'errored' ? (
+      <>
+        <HLevel5>{message}</HLevel5>
+      </>
+    ) : null}
   </Container>
 ))
 
 SearchStatus.propTypes = {
-  status: PropTypes.oneOf(['','initial', 'notFound', 'loading']).isRequired,
+  status: PropTypes.oneOf(['','initial', 'notFound', 'loading', 'errored']).isRequired,
+  message: PropTypes.string,
 }

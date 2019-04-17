@@ -1,4 +1,2 @@
-export { convertationWatcher } from './convertationSaga'
-export { searchCountriesTrigger } from './searchCountriesSaga'
-export { searchCountriesWatcher } from './searchCountriesSaga'
-export { selectCountryWatcher } from './searchCountriesSaga'
+export { exchangeRateWatcher, convertationWatcher } from './convertationSaga'
+export { countrySearchInputWatcher, searchCountriesWatcher, selectCountryWatcher } from './searchCountriesSaga'

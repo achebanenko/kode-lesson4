@@ -40,7 +40,7 @@ export const SelectCountry = ({
 
       {
         status 
-          ? <SearchStatus status={status}/>
+          ? <SearchStatus status={status} message={status === 'errored' ? 'Ошибка соединения' : ''} />
           : null
       }
 

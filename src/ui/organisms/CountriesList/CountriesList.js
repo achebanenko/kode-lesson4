@@ -6,7 +6,11 @@ import { Caption2 } from '@ui/atoms/Typography'
 import { Country } from '@ui/molecules'
 
 const TitleContainer = styled.div`
-  padding-left: ${({ theme }) => theme.paddings.main}px;
+  padding: ${({ theme }) => theme.paddings.half}px ${({ theme }) => theme.paddings.main}px;
+`
+const ListContainer = styled.div`
+  overflow:auto;
+  max-height:450px;
 `
 
 export const CountriesList = ({ 
@@ -16,14 +20,16 @@ export const CountriesList = ({
     <TitleContainer>
       <Caption2>{title}</Caption2>
     </TitleContainer>
-    {list.map(country => (
-      <Country 
-        key={country.alpha2Code} 
-        title={country.name} 
-        onPress={() => {
-          selectCountry({selection, country})
-        }} />
-    ))}
+    <ListContainer>
+      {list.map(country => (
+        <Country 
+          key={country.alpha2Code} 
+          title={country.name} 
+          onPress={() => {
+            selectCountry({selection, country})
+          }} />
+      ))}
+    </ListContainer>
   </>
 )
 

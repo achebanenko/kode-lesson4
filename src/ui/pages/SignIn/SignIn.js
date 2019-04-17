@@ -29,7 +29,7 @@ export const SignIn = ({ value, status, changeNumber, signInTrigger }) => (
       </Wrapper>
       <RequestStatus
         status={status}
-        loadingMessage="Телефон отправлется"
+        loadingMessage="Телефон отправляется"
         successMessage="Номер успешно отправлен"
         failureMessage="Произошла неизвестная ошибка"
       />

@@ -6,9 +6,10 @@ const initialState = {
   terms: false,
   fromTime: '',
   toTime: '',
-  fromValue: '100',
-  toValue: '1',
-  exchangeRate: 0.012,
+  fromValue: '',
+  toValue: '',
+  exchangeRate: {},
+  exchangeRateStatus: '',
 
   countrySearchInput: '',
   countrySearchStatus: 'initial',
@@ -17,6 +18,16 @@ const initialState = {
   country1: {},
   country2: {},
 }
+
+export const archive = createReducer({
+  [actions.storeHistoryCountries]: (state, payload) => ({
+    ...state,
+    countries: payload,
+  })
+},
+{
+  countries: [],
+})
 
 export const reducer = createReducer(
   {
@@ -61,7 +72,7 @@ export const reducer = createReducer(
       ...state,
       historyCountries: payload,
     }),
-    [actions.downloadCountries]: (state, payload) => ({
+    [actions.downloadCountries]: state => ({
       ...state,
       countrySearchStatus: 'loading',
     }),
@@ -70,19 +81,32 @@ export const reducer = createReducer(
       allCountries: payload,
       countrySearchStatus: '',
     }),
-    [actions.downloadCountriesFailure]: (state, payload) => ({
+    [actions.downloadCountriesFailure]: state => ({
       ...state,
-      countrySearchStatus: '',
+      countrySearchStatus: 'errored',
     }),
 
     [actions.changeRateValue]: (state, payload) => ({
       ...state,
       exchangeRate: payload,
     }),
+    [actions.downloadRate]: state => ({
+      ...state,
+      exchangeRateStatus: 'loading',
+    }),
+    [actions.downloadRateSuccess]: (state, payload) => ({
+      ...state,
+      exchangeRate: payload,
+      exchangeRateStatus: '',
+    }),
+    [actions.downloadRateFailure]: state => ({
+      ...state,
+      exchangeRateStatus: 'errored',
+    }),
 
-    [actions.resetExchange]: (state, payload) => (
-      initialState
-    ),
+    [actions.resetExchange]: state => ({
+      ...initialState
+    }),
   },
   initialState,
 )

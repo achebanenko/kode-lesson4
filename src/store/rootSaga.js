@@ -4,18 +4,19 @@ import { routerWatcher } from '@store/router/routerWatcher'
 import { signInWatcher } from '@store/signIn/sagas'
 import { confirmWatcher } from '@store/confirm/sagas'
 import { 
-  convertationWatcher, 
-  searchCountriesTrigger, searchCountriesWatcher, selectCountryWatcher, 
+  countrySearchInputWatcher, searchCountriesWatcher, selectCountryWatcher, 
+  convertationWatcher, exchangeRateWatcher,
 } from '@store/exchange/sagas'
 
 const watchers = [
   routerWatcher,
   signInWatcher, 
-  confirmWatcher, 
-  convertationWatcher,
-  searchCountriesTrigger,
+  confirmWatcher,
+  countrySearchInputWatcher,
   searchCountriesWatcher,
   selectCountryWatcher,
+  exchangeRateWatcher,
+  convertationWatcher,
 ]
 
 export function* rootSaga() {

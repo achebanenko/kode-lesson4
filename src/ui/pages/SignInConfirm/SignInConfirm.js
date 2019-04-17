@@ -28,7 +28,7 @@ export const SignInConfirm = ({ value, status, changeCode, confirmTrigger }) => 
       </Wrapper>
       <RequestStatus
         status={status}
-        loadingMessage="Код отправлется"
+        loadingMessage="Код отправляется"
         failureMessage="Произошла неизвестная ошибка"
         successMessage="Код успешно отправлен"
       />

@@ -27,6 +27,8 @@ const ValueContainer = styled.div`
   flex-direction: column;
   align-items: flex-start;
   justify-content: space-around;
+  overflow: hidden;
+  white-space: nowrap;
 `
 
 export const SelectField = withTheme(

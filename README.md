@@ -15,3 +15,11 @@ redux-saga https://redux-saga.js.org/
 Четверг, 18 апреля, 12:00 KGD
 
 # Процесс выполнения
+
+
+
+**Примечания**  
+- selector ~getHistoryCountries~ could be with ~.filter(v => v.name !== country1.name && v.name !== country2.name)~  
+that would move out active countries` selections from ~historyCountries~ outputed array
+
+
