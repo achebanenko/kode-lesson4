@@ -1,7 +1,7 @@
-import { takeEvery, call, put, select, delay, all } from 'redux-saga/effects'
+import { take, takeEvery, takeLatest, call, put, select, delay, all } from 'redux-saga/effects'
 
 import * as actions from '../actions'
-import { getAllCountries, getCountrySearchInputValue } from '../selectors'
+import { getAllCountries, getCountrySearchInputValue, getHistoryCountries } from '../selectors'
 
 // opening modal
 export function* searchCountriesTrigger() {
@@ -9,6 +9,12 @@ export function* searchCountriesTrigger() {
 }
 function* porter(action) {
   yield put(actions.changeCountrySearchInput(''))
+
+  const historyCountries = yield select(getHistoryCountries)
+  const storedHistoryCountries = JSON.parse(localStorage.getItem('exchange-app:historyCountries')) || []
+  if (historyCountries.length === 0 && storedHistoryCountries.length > 0) {
+    yield put(actions.loadHistoryCountries( storedHistoryCountries ))
+  }
 }
 
 // user typing
@@ -23,7 +29,7 @@ function* worker(action) {
     yield put(actions.changeCountrySearchStatus('initial'))
   } else if (countrySearchInput.length === 1) {
     // download countries
-    if (Array.isArray(allCountries) && allCountries.length === 0) {
+    if (allCountries.length === 0) {
       yield put(actions.downloadCountries())
       
       try {
@@ -60,4 +66,6 @@ export function* selectCountryWatcher() {
 }
 function* keeper(action) {
   yield put(actions.saveSelectedCountry(action.payload))
+  const freshHistoryCountries = yield select(getHistoryCountries)
+  localStorage.setItem('exchange-app:historyCountries', JSON.stringify(freshHistoryCountries))
 }

@@ -8,8 +8,9 @@ import { routes } from '../../../routes'
 
 
 export const SelectCountry = ({ 
-  selection, value, status, countries,
-  push, changeCountrySearchInput, selectCountry,
+  push, 
+  selection, value, status, countries, history,
+  changeCountrySearchInput, selectCountry,
 }) => {
   if(!status && countries.length === 0) {
     status = 'notFound'
@@ -24,15 +25,12 @@ export const SelectCountry = ({
       </ModalHeader>
 
       {
-        status === 'initial'
+        status === 'initial' && history.length > 0
           ? <>
             <HBox />
             <CountriesList
               title={'История поиска'}
-              list={[
-                { name: 'Российская Федерация', alpha2Code: 'RF' },
-                { name: 'Соединенные Штаты Америки', alpha2Code: 'USA' },
-              ]}
+              list={history}
               selectCountry={selectCountry}
               selection={selection}
             />
@@ -47,7 +45,7 @@ export const SelectCountry = ({
       }
 
       { 
-        !status
+        !status && countries.length > 0
           ? <>
               <HBox />
               <CountriesList
@@ -64,11 +62,12 @@ export const SelectCountry = ({
 }
 
 SelectCountry.propTypes = {
+  push: PropTypes.func.isRequired,
   selection: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,
   status: PropTypes.string.isRequired,
   countries: PropTypes.array.isRequired,
-  push: PropTypes.func.isRequired,
+  history: PropTypes.array.isRequired,
   changeCountrySearchInput: PropTypes.func.isRequired,
   selectCountry: PropTypes.func.isRequired,
 }

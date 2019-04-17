@@ -11,23 +11,21 @@ const TitleContainer = styled.div`
 
 export const CountriesList = ({ 
   title, list, selectCountry, selection,
-}) =>
-  list.length > 0 
-    ? (
-      <>
-        <TitleContainer>
-          <Caption2>{title}</Caption2>
-        </TitleContainer>
-        {list.map(country => (
-          <Country 
-            key={country.alpha2Code} 
-            title={country.name} 
-            onPress={() => {
-              selectCountry({selection, country})
-            }} />
-        ))}
-      </>
-    ) : null
+}) => (
+  <>
+    <TitleContainer>
+      <Caption2>{title}</Caption2>
+    </TitleContainer>
+    {list.map(country => (
+      <Country 
+        key={country.alpha2Code} 
+        title={country.name} 
+        onPress={() => {
+          selectCountry({selection, country})
+        }} />
+    ))}
+  </>
+)
 
 CountriesList.propTypes = {
   title: PropTypes.string.isRequired,

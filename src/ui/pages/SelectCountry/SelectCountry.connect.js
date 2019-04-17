@@ -11,6 +11,7 @@ const mapStateToProps = state => ({
   value: selectors.getCountrySearchInputValue(state),
   status: selectors.getCountrySearchStatus(state),
   countries: selectors.getFilteredCountries(state),
+  history: selectors.getHistoryCountries(state),
 })
 
 export const SelectCountryContainer = connect(

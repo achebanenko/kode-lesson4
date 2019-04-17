@@ -13,7 +13,7 @@ const initialState = {
   countrySearchInput: '',
   countrySearchStatus: 'initial',
   allCountries: [],
-  history: [],
+  historyCountries: [],
   country1: {},
   country2: {},
 }
@@ -55,7 +55,11 @@ export const reducer = createReducer(
     }),
     [actions.saveSelectedCountry]: (state, payload) => ({
       ...state,
-      history: [...state.history, {...payload.country, when: Date.now()}],
+      historyCountries: [...state.historyCountries, {...payload.country, when: Date.now()}],
+    }),
+    [actions.loadHistoryCountries]: (state, payload) => ({
+      ...state,
+      historyCountries: payload,
     }),
     [actions.downloadCountries]: (state, payload) => ({
       ...state,
