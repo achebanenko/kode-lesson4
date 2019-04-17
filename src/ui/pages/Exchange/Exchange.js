@@ -12,35 +12,35 @@ const Wrapper = styled.div`
 `
 
 export const Exchange = ({
+  push, 
   terms,
-  fromValue,
-  toValue,
-  fromTime,
-  toTime,
+  fromValue, toValue,
+  fromTime, toTime,
+  country1, country2,
   changeTerms,
+  searchCountriesTrigger,
   changeValuesTrigger,
-  push,
 }) => (
   <PageTemplate>
-    <Header icon="back" />
+    <Header icon="back" action={() => push(`${routes.CONFIRM}`)} />
     <Flex1>
       <Wrapper>
         <SelectField
           label="Страна 1"
-          value="Россия"
-          onPress={() => push(`${routes.SELECT}`, { search: "country1" })}
+          value={country1.name}
+          onPress={() => searchCountriesTrigger('country1')}
         />
         <SelectField
           label="Страна 2"
-          value="Англия"
-          onPress={() => push(`${routes.SELECT}?country2`)}
+          value={country2.name}
+          onPress={() => searchCountriesTrigger('country2')}
         />
         <Divider />
         <HBox />
         <TextField
           label="Российский рубль (RUB)"
           onChange={value => changeValuesTrigger({ value, convertDirection: 'from' })}
-          tip="Текст подсказки к полю"
+          tip={Object.keys(country1).length === 0 ? 'Выберите страну 1' : ''}
           value={fromValue}
           endAdornment="₽"
         />
@@ -49,7 +49,7 @@ export const Exchange = ({
           label="Фунт стерлингов (GBP)"
           onChange={value => changeValuesTrigger({ value, convertDirection: 'to' })}
           value={toValue}
-          tip="Текст подсказки к полю"
+          tip={Object.keys(country2).length === 0 ? 'Выберите страну 2' : ''}
           endAdornment="£"
         />
         <HBox />
@@ -58,7 +58,7 @@ export const Exchange = ({
           toValue={toTime}
           fromAction={() => push(`${routes.TIME_FROM}`)}
           toAction={() => push(`${routes.TIME_TO}`)}
-          tip="Выберите время доставки"
+          tip={(!fromTime && !toTime) ? 'Выберите время доставки' : ''}
         />
         <HBox />
         <CheckboxWithText value={terms} onPress={changeTerms}>
@@ -78,6 +78,8 @@ Exchange.propTypes = {
   toValue: PropTypes.string.isRequired,
   fromTime: PropTypes.string.isRequired,
   toTime: PropTypes.string.isRequired,
+  country1: PropTypes.object.isRequired,
+  country2: PropTypes.object.isRequired,
   changeTerms: PropTypes.func.isRequired,
   changeValuesTrigger: PropTypes.func.isRequired,
   push: PropTypes.func.isRequired,

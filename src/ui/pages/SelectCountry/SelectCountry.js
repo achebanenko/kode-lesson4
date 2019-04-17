@@ -7,29 +7,68 @@ import { CountriesList } from '@ui/organisms'
 import { routes } from '../../../routes'
 
 
-export const SelectCountry = ({ push, search }) => (
-  <PageTemplate>
-    <ModalHeader action={() => push(`${routes.EXCHANGE}`)}>
-      <SearchInput onChange={console.log} />
-    </ModalHeader>
-    
-    <HBox />
-    <CountriesList
-      title={'История поиска'}
-      list={[
-        { title: 'Российская Федерация', id: 'RF' },
-        { title: 'Соединенные Штаты Америки', id: 'USA' },
-      ]}
-      selectCountry={console.log}
-    />
+export const SelectCountry = ({ 
+  selection, value, status, countries,
+  push, changeCountrySearchInput, selectCountry,
+}) => {
+  if(!status && countries.length === 0) {
+    status = 'notFound'
+  }
+  return (
+    <PageTemplate>
+      <ModalHeader action={() => push(`${routes.EXCHANGE}`)}>
+        <SearchInput 
+          value={value}
+          onChange={changeCountrySearchInput} 
+        />
+      </ModalHeader>
 
-    <SearchStatus 
-      status="initial" 
-    />
-  </PageTemplate>
-)
+      {
+        status === 'initial'
+          ? <>
+            <HBox />
+            <CountriesList
+              title={'История поиска'}
+              list={[
+                { name: 'Российская Федерация', alpha2Code: 'RF' },
+                { name: 'Соединенные Штаты Америки', alpha2Code: 'USA' },
+              ]}
+              selectCountry={selectCountry}
+              selection={selection}
+            />
+          </>
+          : null
+      }
+
+      {
+        status 
+          ? <SearchStatus status={status}/>
+          : null
+      }
+
+      { 
+        !status
+          ? <>
+              <HBox />
+              <CountriesList
+                title={'Страны'}
+                list={countries}
+                selectCountry={selectCountry}
+                selection={selection}
+              />
+            </>
+          : null
+      }
+    </PageTemplate>
+  )
+}
 
 SelectCountry.propTypes = {
+  selection: PropTypes.string.isRequired,
+  value: PropTypes.string.isRequired,
+  status: PropTypes.string.isRequired,
+  countries: PropTypes.array.isRequired,
   push: PropTypes.func.isRequired,
-  search: PropTypes.string.isRequired,
+  changeCountrySearchInput: PropTypes.func.isRequired,
+  selectCountry: PropTypes.func.isRequired,
 }

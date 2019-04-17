@@ -9,25 +9,34 @@ const TitleContainer = styled.div`
   padding-left: ${({ theme }) => theme.paddings.main}px;
 `
 
-export const CountriesList = ({ list, selectCountry, title }) =>
-  list.length > 0 ? (
-    <>
-      <TitleContainer>
-        <Caption2>{title}</Caption2>
-      </TitleContainer>
-      {list.map(({ title, id }) => (
-        <Country key={id} title={title} id={id} onPress={selectCountry} />
-      ))}
-    </>
-  ) : null
+export const CountriesList = ({ 
+  title, list, selectCountry, selection,
+}) =>
+  list.length > 0 
+    ? (
+      <>
+        <TitleContainer>
+          <Caption2>{title}</Caption2>
+        </TitleContainer>
+        {list.map(country => (
+          <Country 
+            key={country.alpha2Code} 
+            title={country.name} 
+            onPress={() => {
+              selectCountry({selection, country})
+            }} />
+        ))}
+      </>
+    ) : null
 
 CountriesList.propTypes = {
   title: PropTypes.string.isRequired,
   list: PropTypes.arrayOf(
     PropTypes.shape({
-      title: PropTypes.string.isRequired,
-      id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      alpha2Code: PropTypes.string.isRequired,
     }),
   ).isRequired,
   selectCountry: PropTypes.func.isRequired,
+  selection: PropTypes.string.isRequired,
 }

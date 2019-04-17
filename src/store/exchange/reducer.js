@@ -4,11 +4,18 @@ import * as actions from './actions'
 
 const initialState = {
   terms: false,
-  fromTime: '00:00',
-  toTime: '10:00',
+  fromTime: '',
+  toTime: '',
   fromValue: '100',
   toValue: '1',
   exchangeRate: 0.012,
+
+  countrySearchInput: '',
+  countrySearchStatus: 'initial',
+  allCountries: [],
+  history: [],
+  country1: {},
+  country2: {},
 }
 
 export const reducer = createReducer(
@@ -32,7 +39,46 @@ export const reducer = createReducer(
     [actions.changeToTime]: (state, payload) => ({
       ...state,
       toTime: payload,
-    })
+    }),
+    
+    [actions.changeCountrySearchInput]: (state, payload) => ({
+      ...state,
+      countrySearchInput: payload,
+    }),
+    [actions.changeCountrySearchStatus]: (state, payload) => ({
+      ...state,
+      countrySearchStatus: payload,
+    }),
+    [actions.selectCountry]: (state, payload) => ({
+      ...state,
+      [payload.selection]: payload.country,
+    }),
+    [actions.saveSelectedCountry]: (state, payload) => ({
+      ...state,
+      history: [...state.history, {...payload.country, when: Date.now()}],
+    }),
+    [actions.downloadCountries]: (state, payload) => ({
+      ...state,
+      countrySearchStatus: 'loading',
+    }),
+    [actions.downloadCountriesSuccess]: (state, payload) => ({
+      ...state,
+      allCountries: payload,
+      countrySearchStatus: '',
+    }),
+    [actions.downloadCountriesFailure]: (state, payload) => ({
+      ...state,
+      countrySearchStatus: '',
+    }),
+
+    [actions.changeRateValue]: (state, payload) => ({
+      ...state,
+      exchangeRate: payload,
+    }),
+
+    [actions.resetExchange]: (state, payload) => (
+      initialState
+    ),
   },
   initialState,
 )

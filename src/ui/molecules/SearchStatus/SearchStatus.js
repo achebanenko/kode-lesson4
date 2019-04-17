@@ -37,5 +37,5 @@ export const SearchStatus = withTheme(({ status, theme }) => (
 ))
 
 SearchStatus.propTypes = {
-  status: PropTypes.oneOf(['initial', 'notFound', 'loading']).isRequired,
+  status: PropTypes.oneOf(['','initial', 'notFound', 'loading']).isRequired,
 }

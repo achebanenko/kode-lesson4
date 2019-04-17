@@ -1,10 +1,11 @@
 import { takeEvery, select, put } from 'redux-saga/effects'
 
-import * as actions from './actions'
-import { getExchangeRate } from './selectors'
+import * as actions from '../actions'
+import { getExchangeRate } from '../selectors'
 
 function* worker(action) {
   const { value, convertDirection } = action.payload
+  
   const exchangeRate = yield select(getExchangeRate)
   const input = parseFloat(value)
   if (Number.isNaN(input)) {
@@ -16,7 +17,7 @@ function* worker(action) {
 
     yield put(actions.changeFromValue(fromValue))
     yield put(actions.changeToValue(toValue))
-    
+
   } else if (convertDirection === 'to') {
     const toValue = input.toString()
     const fromValue = (
@@ -28,6 +29,6 @@ function* worker(action) {
   }
 }
 
-export function* exchangeWatcher() {
+export function* convertationWatcher() {
   yield takeEvery(actions.changeValuesTrigger.toString(), worker)
 }

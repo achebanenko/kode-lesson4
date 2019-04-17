@@ -9,14 +9,14 @@ const Container = styled.div`
   border-bottom: 1px ${({ theme }) => theme.pallete.divider} solid;
 `
 
-export const Country = ({ title, id, onPress }) => (
-  <Container onClick={() => onPress(id)}>
+export const Country = ({ title, onPress }) => (
+  <Container onClick={onPress}>
     <Body2>{title}</Body2>
   </Container>
 )
 
 Country.propTypes = {
   title: PropTypes.string.isRequired,
-  id: PropTypes.string,
+  //id: PropTypes.string,
   onPress: PropTypes.func.isRequired,
 }
