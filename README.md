@@ -34,7 +34,7 @@ redux-saga https://redux-saga.js.org/
   - exchangeRateWatcher
   - convertationWorker
 
-###Time
+### Time
 
 |Task|Est|Fact|
 |-|-|-|
