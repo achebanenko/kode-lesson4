@@ -16,10 +16,26 @@ redux-saga https://redux-saga.js.org/
 
 # Процесс выполнения
 
+## Результат
 
 
-**Примечания**  
-- selector ~getHistoryCountries~ could be with ~.filter(v => v.name !== country1.name && v.name !== country2.name)~  
-that would move out active countries` selections from ~historyCountries~ outputed array
+**Contents**  
+- selectionSaga
+  - selectionWatcher
+  - countrySearchInputWatcher
+  - selectCountryWatcher
 
+- history  
+  - persist archive + localStorage
+  - _Примечание - _ to move out active countries from history uncomment ~.filter(v => v.name !== country1.name && v.name !== country2.name)~ in ~getHistoryCountries~ selector  
 
+- convertationSaga
+  - exchangeRateWatcher
+
+###Time
+
+|Task|Est|Fact|
+|-|-|-|
+|selectionSaga|4 hours|6 hours|
+|history|2 hours|4 hours|
+|convertationSaga|3 hours|3 hours|
