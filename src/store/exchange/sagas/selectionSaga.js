@@ -4,7 +4,7 @@ import * as actions from '../actions'
 import { getAllCountries, getHistoryCountries, getStoredHistoryCountries } from '../selectors'
 
 // opening modal
-export function* searchCountriesWatcher() {
+export function* selectionWatcher() {
   yield takeEvery(actions.selectCountryTrigger.toString(), porter)
 }
 function* porter(action) {
@@ -66,7 +66,7 @@ function* worker(action) {
   yield put(actions.changeCountrySearchInput(value))
 }
 
-// homework
+// afterwork
 export function* selectCountryWatcher() {
   yield takeEvery(actions.selectCountry.toString(), keeper)
 }

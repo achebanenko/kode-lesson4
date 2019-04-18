@@ -4,7 +4,7 @@ import { routerWatcher } from '@store/router/routerWatcher'
 import { signInWatcher } from '@store/signIn/sagas'
 import { confirmWatcher } from '@store/confirm/sagas'
 import { 
-  countrySearchInputWatcher, searchCountriesWatcher, selectCountryWatcher, 
+  selectionWatcher, countrySearchInputWatcher, selectCountryWatcher, 
   convertationWatcher, exchangeRateWatcher,
 } from '@store/exchange/sagas'
 
@@ -12,8 +12,8 @@ const watchers = [
   routerWatcher,
   signInWatcher, 
   confirmWatcher,
+  selectionWatcher,
   countrySearchInputWatcher,
-  searchCountriesWatcher,
   selectCountryWatcher,
   exchangeRateWatcher,
   convertationWatcher,
