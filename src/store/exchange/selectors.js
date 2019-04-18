@@ -27,9 +27,8 @@ export const getFilteredCountries = state => {
   return []
 }
 export const getHistoryCountries = state => {
-  const { historyCountries } = state.exchange
-  return historyCountries
-    // .filter(v => v.name !== country1.name && v.name !== country2.name)
+  return state.exchange.historyCountries
+    // .filter(v => v.name !== state.exchange.country1.name && v.name !== state.exchange.country2.name)
     .sort((a,b) => b.when - a.when)
     .reduce((res, x) =>
       res.concat( res.find(y => y.name === x.name) ? [] : [x])

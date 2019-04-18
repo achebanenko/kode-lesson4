@@ -8,15 +8,14 @@ const initialState = {
   toTime: '',
   fromValue: '',
   toValue: '',
-  exchangeRate: {},
-  exchangeRateStatus: '',
-
   countrySearchInput: '',
   countrySearchStatus: 'initial',
   allCountries: [],
   historyCountries: [],
   country1: {},
   country2: {},
+  exchangeRate: {},
+  exchangeRateStatus: '',
 }
 
 export const archive = createReducer({
@@ -35,14 +34,6 @@ export const reducer = createReducer(
       ...state,
       terms: !state.terms,
     }),
-    [actions.changeFromValue]: (state, payload) => ({
-      ...state,
-      fromValue: payload,
-    }),
-    [actions.changeToValue]: (state, payload) => ({
-      ...state,
-      toValue: payload,
-    }),
     [actions.changeFromTime]: (state, payload) => ({
       ...state,
       fromTime: payload,
@@ -50,6 +41,14 @@ export const reducer = createReducer(
     [actions.changeToTime]: (state, payload) => ({
       ...state,
       toTime: payload,
+    }),
+    [actions.changeFromValue]: (state, payload) => ({
+      ...state,
+      fromValue: payload,
+    }),
+    [actions.changeToValue]: (state, payload) => ({
+      ...state,
+      toValue: payload,
     }),
     
     [actions.changeCountrySearchInput]: (state, payload) => ({

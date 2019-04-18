@@ -32,12 +32,13 @@ const StyledInput = styled.input`
   }
 `
 
-export const SearchInput = withTheme(({ theme, onChange, value }) => (
+export const SearchInput = withTheme(({ theme, onChange, value, disabled }) => (
   <Container>
     <VBox width={theme.paddings.main + theme.paddings.half} />
     <StyledInput
       onChange={e => onChange(e.currentTarget.value)}
       value={value}
+      disabled={disabled}
       placeholder="Поиск"
     />
     <VBox />
@@ -49,4 +50,5 @@ export const SearchInput = withTheme(({ theme, onChange, value }) => (
 SearchInput.propTypes = {
   onChange: PropTypes.func.isRequired,
   value: PropTypes.string,
+  disabled: PropTypes.bool,
 }

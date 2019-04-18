@@ -10,7 +10,7 @@ import { routes } from '../../../routes'
 export const SelectCountry = ({ 
   push, 
   selection, value, status, countries, history,
-  changeCountrySearchInput, selectCountry,
+  countrySearchInputTrigger, selectCountry,
 }) => {
   if(!status && countries.length === 0) {
     status = 'notFound'
@@ -20,7 +20,7 @@ export const SelectCountry = ({
       <ModalHeader action={() => push(`${routes.EXCHANGE}`)}>
         <SearchInput 
           value={value}
-          onChange={changeCountrySearchInput} 
+          onChange={countrySearchInputTrigger} 
         />
       </ModalHeader>
 
@@ -68,6 +68,6 @@ SelectCountry.propTypes = {
   status: PropTypes.string.isRequired,
   countries: PropTypes.array.isRequired,
   history: PropTypes.array.isRequired,
-  changeCountrySearchInput: PropTypes.func.isRequired,
+  countrySearchInputTrigger: PropTypes.func.isRequired,
   selectCountry: PropTypes.func.isRequired,
 }

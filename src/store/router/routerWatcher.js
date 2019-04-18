@@ -25,7 +25,7 @@ export function* routerWatcher() {
       yield put(push(routes.EXCHANGE))
     }
 
-    if (action.type === exchangeActions.searchCountriesTrigger.toString()) {
+    if (action.type === exchangeActions.selectCountryTrigger.toString()) {
       yield put(push(`${routes.SELECT}?${action.payload}`))
     }
     if (action.type === exchangeActions.selectCountry.toString()) {

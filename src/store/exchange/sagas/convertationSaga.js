@@ -7,27 +7,33 @@ export function* exchangeRateWatcher() {
   yield takeEvery(actions.selectCountry.toString(), exchangeRateWorker)
 }
 function* exchangeRateWorker() {
+  yield put(actions.changeFromValue(''))
+  yield put(actions.changeToValue(''))
+
   const country1 = yield select(getCountry1)
   const country2 = yield select(getCountry2)
-  
+
   if (country1.currencies && country2.currencies) {
     const currency1 = country1.currencies[0].code
     const currency2 = country2.currencies[0].code
 
     yield put(actions.downloadRate())
-    
     try {
-      const symbols = `${currency1},${currency2}`;
       const res = yield call(
         fetch,
-        `https://api.exchangeratesapi.io/latest?symbols=${symbols}`,
+        `https://api.exchangeratesapi.io/latest?base=${currency1}`,
       )
+
       const result = yield call([res, res.json])
-      
       yield delay(1000)
 
       if (Object.keys(result).length > 0 && !("error" in result)) {
-        yield put(actions.downloadRateSuccess(result))
+        if(currency2 in result.rates) {
+          yield put(actions.downloadRateSuccess(result))
+        } else if (currency1 === currency2) {
+          const similar = {"base":currency1, "rates":{[currency2]:1}}
+          yield put(actions.downloadRateSuccess(similar))
+        }
       } else {
         throw new Error('error')
       }
@@ -38,34 +44,32 @@ function* exchangeRateWorker() {
 }
 
 
-
-
 export function* convertationWatcher() {
   yield takeEvery(actions.changeValuesTrigger.toString(), convertationWorker)
 }
 function* convertationWorker(action) {
   const { value, convertDirection } = action.payload
   
+  const country2 = yield select(getCountry2)
+  const currency2 = country2.currencies[0].code
   const exchangeRate = yield select(getExchangeRate)
+  const currencyRate = exchangeRate.rates[currency2]
+
   const input = parseFloat(value)
   if (Number.isNaN(input)) {
-    return
+    return 
   }
+
   if (convertDirection === 'from') {
     const fromValue = input.toString()
-    const toValue = (Math.round(input * exchangeRate * 1000) / 1000).toString()
-
+    const toValue = (Math.round(input * currencyRate * 1000) / 1000).toString()
     yield put(actions.changeFromValue(fromValue))
     yield put(actions.changeToValue(toValue))
 
   } else if (convertDirection === 'to') {
     const toValue = input.toString()
-    const fromValue = (
-      Math.round((input / exchangeRate) * 1000) / 1000
-    ).toString()
-
+    const fromValue = (Math.round((input / currencyRate) * 1000) / 1000).toString()
     yield put(actions.changeFromValue(fromValue))
     yield put(actions.changeToValue(toValue))
   }
 }
-

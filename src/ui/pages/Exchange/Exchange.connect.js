@@ -2,7 +2,7 @@ import { connect } from 'react-redux'
 import { push } from 'connected-react-router'
 
 import { getTerms, getFromTime, getToTime, getFromValue, getToValue, getCountry1, getCountry2, getExchangeRateStatus, } from '@store/exchange/selectors'
-import { changeTerms, changeValuesTrigger, searchCountriesTrigger } from '@store/exchange/actions'
+import { changeTerms, selectCountryTrigger, changeValuesTrigger, } from '@store/exchange/actions'
 import { Exchange } from './Exchange'
 
 const mapStateToProps = state => ({
@@ -18,5 +18,5 @@ const mapStateToProps = state => ({
 
 export const ExchangeContainer = connect(
   mapStateToProps,
-  { push, changeTerms, changeValuesTrigger, searchCountriesTrigger, },
+  { push, changeTerms, selectCountryTrigger, changeValuesTrigger, },
 )(Exchange)

@@ -1,35 +1,39 @@
-import { takeEvery, call, put, select, delay, all } from 'redux-saga/effects'
+import { takeEvery, takeLatest, call, put, select, delay, all } from 'redux-saga/effects'
 
 import * as actions from '../actions'
-import { getAllCountries, getCountrySearchInputValue, getHistoryCountries, getStoredHistoryCountries } from '../selectors'
+import { getAllCountries, getHistoryCountries, getStoredHistoryCountries } from '../selectors'
 
 // opening modal
 export function* searchCountriesWatcher() {
-  yield takeEvery(actions.searchCountriesTrigger.toString(), porter)
+  yield takeEvery(actions.selectCountryTrigger.toString(), porter)
 }
 function* porter(action) {
   yield put(actions.changeCountrySearchInput(''))
+  yield put(actions.changeCountrySearchStatus('initial'))
 
   const historyCountries = yield select(getHistoryCountries)
-  //const storedHistoryCountries = JSON.parse(localStorage.getItem('exchange-app:historyCountries')) || []
-  const storedHistoryCountries = yield select(getStoredHistoryCountries)
-  if (historyCountries.length === 0 && storedHistoryCountries.length > 0) {
-    yield put(actions.loadHistoryCountries( storedHistoryCountries ))
+  if (historyCountries.length === 0) {
+    const storedHistoryCountries = JSON.parse(localStorage.getItem('exchange-app:historyCountries')) || []
+    // the same but from persist archive
+    // const storedHistoryCountries = yield select(getStoredHistoryCountries)
+    if (storedHistoryCountries.length > 0) {
+      yield put(actions.loadHistoryCountries( storedHistoryCountries ))
+    }
   }
 }
 
 // user typing
 export function* countrySearchInputWatcher() {
-  yield takeEvery(actions.changeCountrySearchInput.toString(), worker)
+  yield takeLatest(actions.countrySearchInputTrigger.toString(), worker)
 }
 function* worker(action) {
-  const countrySearchInput = yield select(getCountrySearchInputValue)
-  const allCountries = yield select(getAllCountries)
-
-  if (countrySearchInput.length === 0) {
+  const value = action.payload
+  
+  if (value.length === 0) {
     yield put(actions.changeCountrySearchStatus('initial'))
-  } else if (countrySearchInput.length === 1) {
-    // download countries
+  }
+  if (value.length === 1) {
+    const allCountries = yield select(getAllCountries)
     if (allCountries.length === 0) {
       yield put(actions.downloadCountries())
       
@@ -53,12 +57,13 @@ function* worker(action) {
     } else {
       yield all({
         simulate: put(actions.changeCountrySearchStatus('loading')),
-        latency: delay(1000)
+        latency: delay(500)
       })
       yield put(actions.changeCountrySearchStatus(''))
     }
-
   }
+
+  yield put(actions.changeCountrySearchInput(value))
 }
 
 // homework
@@ -66,10 +71,11 @@ export function* selectCountryWatcher() {
   yield takeEvery(actions.selectCountry.toString(), keeper)
 }
 function* keeper(action) {
+  // temp history
   yield put(actions.saveSelectedCountry(action.payload))
   const freshHistoryCountries = yield select(getHistoryCountries)
-  //persist
+  // persist archive
   yield put(actions.storeHistoryCountries(freshHistoryCountries))
-  //localStorage
+  // localStorage
   localStorage.setItem('exchange-app:historyCountries', JSON.stringify(freshHistoryCountries))
 }

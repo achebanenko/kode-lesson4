@@ -18,7 +18,7 @@ export const Exchange = ({
   fromTime, toTime,
   country1, country2,
   changeTerms,
-  searchCountriesTrigger,
+  selectCountryTrigger,
   changeValuesTrigger, exchangeRateStatus,
 }) => {
   const currency1 = country1.currencies ? country1.currencies[0] : {};
@@ -32,12 +32,12 @@ export const Exchange = ({
           <SelectField
             label="Страна 1"
             value={country1.name}
-            onPress={() => searchCountriesTrigger('country1')}
+            onPress={() => selectCountryTrigger('country1')}
           />
           <SelectField
             label="Страна 2"
             value={country2.name}
-            onPress={() => searchCountriesTrigger('country2')}
+            onPress={() => selectCountryTrigger('country2')}
           />
 
           {
@@ -88,6 +88,7 @@ export const Exchange = ({
 }
 
 Exchange.propTypes = {
+  push: PropTypes.func.isRequired,
   terms: PropTypes.bool.isRequired,
   fromValue: PropTypes.string.isRequired,
   toValue: PropTypes.string.isRequired,
@@ -95,8 +96,8 @@ Exchange.propTypes = {
   toTime: PropTypes.string.isRequired,
   country1: PropTypes.object.isRequired,
   country2: PropTypes.object.isRequired,
-  exchangeRateStatus: PropTypes.string.isRequired,
   changeTerms: PropTypes.func.isRequired,
+  selectCountryTrigger: PropTypes.func.isRequired,
+  exchangeRateStatus: PropTypes.string.isRequired,
   changeValuesTrigger: PropTypes.func.isRequired,
-  push: PropTypes.func.isRequired,
 }
