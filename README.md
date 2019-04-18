@@ -18,6 +18,7 @@ redux-saga https://redux-saga.js.org/
 
 ## Результат
 
+https://elastic-shirley-3ac272.netlify.com/  
 
 **Contents**  
 - selectionSaga
