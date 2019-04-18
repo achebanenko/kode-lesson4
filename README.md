@@ -26,11 +26,13 @@ redux-saga https://redux-saga.js.org/
   - selectCountryWatcher
 
 - history  
-  - persist archive + localStorage
-  - _Примечание - _ to move out active countries from history uncomment ~.filter(v => v.name !== country1.name && v.name !== country2.name)~ in ~getHistoryCountries~ selector  
+  - historyCountries (temporary _session_ storage for multiple instances and to track chronology)
+  - persist archive.countries + localStorage (long term storage with freshest and unique instances)
+  _Примечание - _ to move out active countries from history uncomment ~.filter(v => v.name !== country1.name && v.name !== country2.name)~ in ~getHistoryCountries~ selector  
 
 - convertationSaga
   - exchangeRateWatcher
+  - convertationWorker
 
 ###Time
 
