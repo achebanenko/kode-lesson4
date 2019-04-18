@@ -1,4 +1,4 @@
-import { takeEvery, call, select, put, delay } from 'redux-saga/effects'
+import { takeEvery, race, call, select, put, delay } from 'redux-saga/effects'
 
 import * as actions from '../actions'
 import { getCountry1, getCountry2, getExchangeRate } from '../selectors'
@@ -19,23 +19,30 @@ function* exchangeRateWorker() {
 
     yield put(actions.downloadRate())
     try {
-      const res = yield call(
-        fetch,
-        `https://api.exchangeratesapi.io/latest?base=${currency1}`,
-      )
+      const { res, timeout } = yield race({
+        res: call(
+          fetch,
+          `https://api.exchangeratesapi.io/latest?base=${currency1}`,
+        ),
+        timeout: delay(10000)
+      })
 
-      const result = yield call([res, res.json])
-      yield delay(1000)
+      if(res) {
+        const result = yield call([res, res.json])
+        yield delay(1000)
 
-      if (Object.keys(result).length > 0 && !("error" in result)) {
-        if(currency2 in result.rates) {
-          yield put(actions.downloadRateSuccess(result))
-        } else if (currency1 === currency2) {
-          const similar = {"base":currency1, "rates":{[currency2]:1}}
-          yield put(actions.downloadRateSuccess(similar))
+        if (Object.keys(result).length > 0 && !("error" in result)) {
+          if(currency2 in result.rates) {
+            yield put(actions.downloadRateSuccess(result))
+          } else if (currency1 === currency2) {
+            const similar = {"base":currency1, "rates":{[currency2]:1}}
+            yield put(actions.downloadRateSuccess(similar))
+          }
+        } else {
+          throw new Error('error')
         }
-      } else {
-        throw new Error('error')
+      } else if(timeout) {
+        yield put(actions.downloadRateFailure())
       }
     } catch (e) {
       yield put(actions.downloadRateFailure())
